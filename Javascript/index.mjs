@@ -65,3 +65,66 @@ function Menu() {
       }
     });
 }
+
+//This function handles viewing of departments
+function viewAllDepartments() {
+    const query = `
+    SELECT role.id, role.title, department.name AS department, role.salary
+    FROM role
+    INNER JOIN department ON role.department_id = department.id
+    `;
+    client.query( query, (err, res) => {
+        if (err) throw err;
+        console.table(res.rows);
+        mainMenu();
+    });
+}
+
+//This function handles the viewing of roles
+function viewRoles() {
+    const query = `
+    SELECT role.id, role.title, department.name AS department, role.salary
+    FROM role
+    INNER JOIN department ON role.department_id = department.id
+    `;
+    client.query( query, (err, res) => {
+        if (err) throw err;
+        console.table(res.rows);
+        mainMenu();
+    });
+}
+
+//This function will handle the viewing of employees
+function Viewemployees () {
+    const query = `
+    SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary,
+           CONCAT(manager.first_name, '', manager.last_name) AS manager
+    FROM employee
+    LEFT JOIN role ON employee.role_id = role.id
+    LEFT JOIN department ON role.department_id = department.id
+    LEFT JOIN employee manager ON manager.id = employee.manager_id
+    `;
+    client.query( query, (err, res) => {
+        if (err) throw err;
+        console.table(res.rows);
+        mainMENU();
+    });
+}
+
+//This function will handle the adding of departments
+function addDepartment() {
+    inquirer.prompt({
+        name: 'name',
+        type: 'input',
+        message: 'Please enter a department name:'
+    })
+    .then( answer => {
+        const query = 'INSERT INTO department (name) VALUES ($1)';
+        client.query(query, [answer.name], (err, res) => {
+            if(err) throw err;
+            console.log('Department added: ${answer.name}');
+            mainManu();
+        });
+    });
+}
+//This function will add Roles
