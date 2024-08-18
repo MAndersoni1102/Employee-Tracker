@@ -1,6 +1,5 @@
 CREATE DATABASE Company;
 
-/c Company;
 --This will create a table with the departments at the company
 CREATE TABLE Department (
     id SERIAL PRIMARY KEY,
